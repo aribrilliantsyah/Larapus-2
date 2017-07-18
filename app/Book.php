@@ -23,7 +23,7 @@ class Book extends Model
 
 		self::deleting(function($book)
 		{
-			if ($book->borrowLogs()->count()>0)
+			if ($book->borrowLogs()->borrowed()->count()>0)
 			{
 				Session::flash("flash_notification", [
             	"level"=>"danger",
