@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Laratrust\LaratrustFacade as Laratrust;
 use Illuminate\Support\Facades\Auth;
+use Charts;
+use App\Paket;
+use DB;
+use App\Pengambilan;
 
 class HomeController extends Controller
 {
@@ -26,18 +30,31 @@ class HomeController extends Controller
     public function index()
     {
         if (Laratrust::hasRole('admin')) return $this->adminDashboard();
-        if (Laratrust::hasRole('member')) return $this->memberDashboard();
         return view('home');
+
     }
 
     protected function adminDashboard()
     {
-        return view('dashboard.admin');
-    }
+        $total = Paket::all()->count();
+        $ambil = Pengambilan::where('diambil','=',0)->count();
 
-    protected function memberDashboard()
-    {
-        $borrowLogs = Auth::user()->borrowLogs()->borrowed()->get();
-        return view('dashboard.member', compact('borrowLogs'));
+        $chart = Charts::database(DB::table('pakets')->join('divisis','divisis.id', '=', 'pakets.divisi_id')->select('pakets.*','divisis.nama as nama_div')->get(), 'donut', 'highcharts')
+                    ->title("Jumlah Paket Per Divisi")
+                    ->elementLabel("Total")
+                    ->responsive(false)
+                    ->width(0)
+                    ->height(500)
+                    ->groupBy('nama_div');
+
+        $line = Charts::database(Paket::all(), 'line', 'highcharts')
+                    ->title("Jumlah Paket Per Bulan")
+                    ->elementLabel("Total")
+                    ->responsive(false)
+                    ->width(0)
+                    ->height(500)
+                    ->groupByMonth();
+
+        return view('dashboard.admin', (['chart' => $chart, 'line' => $line]), compact('total','ambil'));
     }
 }

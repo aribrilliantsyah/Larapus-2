@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('email') ? 'has-error' : '' }}">
-                        {!! Form::label('email','Alamat Email',['class'=>'col-md-4 control-label']) !!}
+                        {!! Form::label('email','Nomor Pokok Pegawai',['class'=>'col-md-4 control-label']) !!}
                         <div class="col-md-6">
                             {!! Form::email('email',null,['class'=>'form-control']) !!}
                             {!! $errors->first('email','<p class="help-block">:message</p>') !!}

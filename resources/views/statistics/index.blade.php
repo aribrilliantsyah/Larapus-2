@@ -1,38 +1,59 @@
-@extends('layouts.app')
+@extends('layouts.tema')
+@section('panel')
+
+                    <li>
+                        <a href="{{ url('/home') }}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('pakets.index') }}"><i class="fa fa-arrow-down"></i> Penerimaan Paket</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('pengambilan.index') }}"><i class="fa fa-arrow-up"></i> Pengambilan Paket</a>
+                    </li>
+                    <li>
+                        <a class="active-menu" href="{{ route('rincian.index') }}"><i class="fa fa-bars"></i> Rincian</a>
+                    </li>
+
+@endsection
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<ul class="breadcrumb">
-				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li class="active">Data Peminjaman</li>
-			</ul>
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h2 class="panel-title">Data Peminjaman</h2>
-				</div>
-				<div class="panel-body">
-					{!! $html->table(['class'=>'table-striped']) !!}
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <ol class="breadcrumb">
+                          <li class="active">Rincian Paket</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        
+                            Data Rincian Paket
+                        
+                        </div>
+                        <div class="panel-body">
+                            
+                            <div class="row">
+                
+                        <div class="panel-body">
+                           {!! $html->table(['class'=>'table-striped']) !!}
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+            </div>
 @endsection
 
 @section('scripts')
 {!! $html->scripts() !!}
-<script>
-	$(function(){
-		$('<div id="filter_status" class="dataTables_length" style="display: inline-block; margin-left:10px;"><label>Status <select size="1" name="filter_status" class="form-control input-sm" style="width:140px;"><option value="all" selected="selected">Semua</option><option value="returned">Sudah Dikembalikan</option><option value="not-returned">Belum Dikembalikan</option></select></label></div>').insertAfter('.dataTables_length');
-
-		$("#dataTableBuilder").on('preXhr.dt',function(e,settings,data){
-			data.status = $('select[name="filter_status"]').val();
-		});
-
-		$('select[name="filter_status"]').change(function(){
-			window.LaravelDataTables["dataTableBuilder"].ajax.reload();
-		});
-	});
-</script>
 @endsection
